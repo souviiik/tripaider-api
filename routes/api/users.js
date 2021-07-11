@@ -17,7 +17,7 @@ router.post(
   check('fname', 'First Name is required').notEmpty(),
   check('lname', 'Last Name is required').notEmpty(),
   check('email', 'Please include a valid email').isEmail(),
-  check('phone', 'Please include a phone number').nonEmpty(),
+  check('phone', 'Please include a phone number').notEmpty(),
   check(
     'password',
     'Please enter a password with 6 or more characters'
@@ -68,9 +68,11 @@ router.post(
         }
       };
 
+      const jwtSecret = process.env.JWT_SECRET || config.get('jwtSecret');
+
       jwt.sign(
         payload,
-        config.get('jwtSecret'),
+        jwtSecret,
         { expiresIn: '5 days' },
         (err, token) => {
           if (err) throw err;
