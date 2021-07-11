@@ -14,8 +14,10 @@ const User = require('../../models/User');
 // @access   Public
 router.post(
   '/',
-  check('name', 'Name is required').notEmpty(),
+  check('fname', 'First Name is required').notEmpty(),
+  check('lname', 'Last Name is required').notEmpty(),
   check('email', 'Please include a valid email').isEmail(),
+  check('phone', 'Please include a phone number').nonEmpty(),
   check(
     'password',
     'Please enter a password with 6 or more characters'
@@ -26,7 +28,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, email, password } = req.body;
+    const { fname, lname, email, phone, password } = req.body;
 
     try {
       let user = await User.findOne({ email });
@@ -47,9 +49,10 @@ router.post(
       // );
 
       user = new User({
-        name,
+        fname,
+        lname,
         email,
-        // avatar,
+        phone,
         password
       });
 
