@@ -5,7 +5,12 @@ const path = require("path");
 
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  origin: "tripaider.com",
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
+app.use(cors(corsOptions));
 // Connect Database
 connectDB();
 
