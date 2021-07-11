@@ -5,12 +5,12 @@ const path = require("path");
 
 const app = express();
 
+app.use(cors());
 // Connect Database
 connectDB();
 
 // Init Middleware
 app.use(express.json());
-app.use(cors());
 
 // Define Routes
 app.use("/api/users", require("./routes/api/users"));
