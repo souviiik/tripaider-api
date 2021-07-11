@@ -1,0 +1,6 @@
+{
+  "mongoURI": "mongodb+srv://almighty:JX6pksXdLgWuP5cx@tripaidercluster.cgmqy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+  "jwtSecret": "secret",
+  "githubClientId": "",
+  "githubSecret": ""
+}
