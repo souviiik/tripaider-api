@@ -9,7 +9,6 @@ const nodemailer = require("nodemailer");
 // const normalize = require('normalize-url');
 
 const User = require("../../models/User");
-const { SignupSuccess } = require("../../emailTpl/emailTemplates");
 
 // @route    POST api/users
 // @desc     Register user
@@ -73,8 +72,8 @@ router.post(
         port: 587,
         // secure: false, // true for 465, false for other ports
         auth: {
-          user: process.env.EMAIL_USER, // generated ethereal user
-          pass: process.env.EMAIL_PASS, // generated ethereal password
+          user: "lottie.jenkins0@ethereal.email", // generated ethereal user
+          pass: "Rygs7wB43zg7jpKh81", // generated ethereal password
         },
       });
 
@@ -84,7 +83,20 @@ router.post(
         to: email, // list of receivers
         subject: "Welcome to tripaider.com", // Subject line
         // text: "Hello world?", // plain text body
-        html: SignupSuccess(fname, email), // html body
+        html: `
+        <div style="font-size: 16px; line-height: 22px;">
+          <img src="https://www.tripaider.com/static/media/logo.3c890626.jpg" alt="tripaider logo" width="200" />
+
+          <p>Hello ${fname}!</p>
+
+          <p>You have successfully created your tripaider account with the following email address: <strong>${email}</strong>.</p>
+          
+          <p>If you have any queries or comments just send an email to <a href="mailto: support@tripaider.com">support@tripaider.com</a>. We would love to hear from you!</p>
+        
+          <p>Thank you for visiting tripaider's website.<br />
+          The TRIPAIDER Web Team</p>
+        </div>
+        `, // html body
       });
 
       console.log("Message sent: %s", info.messageId);
