@@ -81,9 +81,18 @@ router.post(
       let info = await transporter.sendMail({
         from: '"tripaider.com" <noreply@tripaider.com>', // sender address
         to: email, // list of receivers
-        subject: "Hello ✔", // Subject line
+        subject: "Welcome to tripaider.com", // Subject line
         // text: "Hello world?", // plain text body
-        html: "<b>Hello world?</b>", // html body
+        html: `
+        <p>Hello ${fname}!</p>
+
+        <p>You have successfully created your tripaider account with the following email address: ${email}.</p>
+        
+        <p>If you have any queries or comments just email support@tripaider.in. We would love to hear from you!</p>
+      
+        <p>Thank you for visiting tripaider's website.<br />
+        The TRIPAIDER Web Team</p>
+        `, // html body
       });
 
       console.log("Message sent: %s", info.messageId);
