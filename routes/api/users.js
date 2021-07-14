@@ -1,27 +1,28 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 // const gravatar = require('gravatar');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 // const config = require('config');
-const { check, validationResult } = require('express-validator');
+const { check, validationResult } = require("express-validator");
+const nodemailer = require("nodemailer");
 // const normalize = require('normalize-url');
 
-const User = require('../../models/User');
+const User = require("../../models/User");
 
 // @route    POST api/users
 // @desc     Register user
 // @access   Public
 router.post(
-  '/',
-  check('fname', 'First Name is required').notEmpty(),
-  check('lname', 'Last Name is required').notEmpty(),
-  check('email', 'Please include a valid email').isEmail(),
-  check('phone', 'Please include a phone number').notEmpty(),
-  check('usertype', 'Please select a user type').notEmpty(),
+  "/",
+  check("fname", "First Name is required").notEmpty(),
+  check("lname", "Last Name is required").notEmpty(),
+  check("email", "Please include a valid email").isEmail(),
+  check("phone", "Please include a phone number").notEmpty(),
+  check("usertype", "Please select a user type").notEmpty(),
   check(
-    'password',
-    'Please enter a password with 6 or more characters'
+    "password",
+    "Please enter a password with 6 or more characters"
   ).isLength({ min: 6 }),
   async (req, res) => {
     const errors = validationResult(req);
@@ -37,7 +38,7 @@ router.post(
       if (user) {
         return res
           .status(400)
-          .json({ errors: [{ msg: 'User already exists' }] });
+          .json({ errors: [{ msg: "User already exists" }] });
       }
 
       // const avatar = normalize(
@@ -55,7 +56,7 @@ router.post(
         email,
         phone,
         usertype,
-        password
+        password,
       });
 
       const salt = await bcrypt.genSalt(10);
@@ -64,16 +65,41 @@ router.post(
 
       await user.save();
 
+      /************ Node Mailer */
+
+      let transporter = nodemailer.createTransport({
+        host: "smtp.ethereal.email",
+        port: 587,
+        secure: false, // true for 465, false for other ports
+        auth: {
+          user: "lottie.jenkins0@ethereal.email", // generated ethereal user
+          pass: "Rygs7wB43zg7jpKh81", // generated ethereal password
+        },
+      });
+
+      // send mail with defined transport object
+      let info = await transporter.sendMail({
+        from: '"tripaider.com" <noreply@tripaider.com>', // sender address
+        to: email, // list of receivers
+        subject: "Hello ✔", // Subject line
+        // text: "Hello world?", // plain text body
+        html: "<b>Hello world?</b>", // html body
+      });
+
+      console.log("Message sent: %s", info.messageId);
+
+      /************ Node Mailer */
+
       const payload = {
         user: {
-          id: user.id
-        }
+          id: user.id,
+        },
       };
 
       jwt.sign(
         payload,
         process.env.JWT_SECRET,
-        { expiresIn: '5 days' },
+        { expiresIn: "5 days" },
         (err, token) => {
           if (err) throw err;
           res.json({ token });
@@ -81,7 +107,7 @@ router.post(
       );
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server error');
+      res.status(500).send("Server error");
     }
   }
 );
