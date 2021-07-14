@@ -70,7 +70,7 @@ router.post(
       let transporter = nodemailer.createTransport({
         host: "smtp.ethereal.email",
         port: 587,
-        secure: false, // true for 465, false for other ports
+        // secure: false, // true for 465, false for other ports
         auth: {
           user: "lottie.jenkins0@ethereal.email", // generated ethereal user
           pass: "Rygs7wB43zg7jpKh81", // generated ethereal password
