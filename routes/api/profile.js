@@ -16,12 +16,10 @@ const Post = require("../../models/Post");
 // @desc     Get current users profile
 // @access   Private
 router.get("/me", auth, async (req, res) => {
-  console.log(`req`, req);
-  console.log(`req.user.id`, req.user.id);
   try {
     const profile = await Profile.findOne({
       user: req.user.id,
-    }).populate("user", ["fname"]);
+    }).populate("user", ["fname", "lname"]);
 
     if (!profile) {
       return res.status(400).json({ msg: "There is no profile for this user" });
