@@ -16,6 +16,8 @@ const Post = require("../../models/Post");
 // @desc     Get current users profile
 // @access   Private
 router.get("/me", auth, async (req, res) => {
+  console.log(`req`, req);
+  console.log(`req.user.id`, req.user.id);
   try {
     const profile = await Profile.findOne({
       user: req.user.id,
