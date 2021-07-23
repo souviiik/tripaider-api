@@ -15,11 +15,11 @@ const User = require("../../models/User");
 // @access   Public
 router.post(
   "/",
-  check("fname", "First Name is required").notEmpty(),
-  check("lname", "Last Name is required").notEmpty(),
+  check("fullname", "First Name is required").notEmpty(),
+  // check("lname", "Last Name is required").notEmpty(),
   check("email", "Please include a valid email").isEmail(),
-  check("phone", "Please include a phone number").notEmpty(),
-  check("usertype", "Please select a user type").notEmpty(),
+  // check("phone", "Please include a phone number").notEmpty(),
+  // check("usertype", "Please select a user type").notEmpty(),
   check(
     "password",
     "Please enter a password with 6 or more characters"
@@ -30,7 +30,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { fname, lname, email, phone, usertype, password } = req.body;
+    const { fullname, email, password } = req.body;
 
     try {
       let user = await User.findOne({ email });
@@ -51,11 +51,8 @@ router.post(
       // );
 
       user = new User({
-        fname,
-        lname,
+        fullname,
         email,
-        phone,
-        usertype,
         password,
       });
 
@@ -87,7 +84,7 @@ router.post(
         <div style="font-size: 16px; line-height: 22px;">
           <img src="https://www.tripaider.com/static/media/logo.3c890626.jpg" alt="tripaider logo" width="200" />
 
-          <p>Hello ${fname}!</p>
+          <p>Hello ${fullname}!</p>
 
           <p>You have successfully created your tripaider account with the following email address: <strong>${email}</strong>.</p>
           
